@@ -66,17 +66,43 @@ overrides to return to the profile defaults.
 
 ## Linux: system RAM and GPU VRAM
 
+The prebuilt Linux runtime supports **NVIDIA and AMD GPUs through Vulkan**.
+Install a compatible Vulkan driver for your GPU. The entire model does not
+have to fit in VRAM: the hybrid profiles below split work between CPU and GPU.
+
+**Hardware testing is still limited**, particularly on AMD GPUs, smaller GPUs,
+and hybrid configurations. Support is implemented, but we haven't verified
+every setup. We welcome both problem reports and successful configurations:
+[share your results](https://github.com/llmsforall/millie-cli/issues) with your
+GPU model, VRAM, system RAM, operating system, driver version, selected model,
+launch settings and any error message.
+
 Dedicated GPU memory and system RAM are separate limits. Choose the actual
 GPU with `millie --llama-gpu 1` (replace `1` with your device index). Automatic
 profile selection uses the selected device memory and system RAM; it does not
 assume another, larger GPU is available to that launch.
 
-For the 9GB and 11GB models, hybrid profiles put expert weights in system RAM:
+For the 9GB and 11GB models, hybrid profiles put expert weights in system RAM.
+The catalog includes targets for around **8 GB VRAM + 16 GB system RAM**
+(`hybrid`) and **4 GB VRAM + 16 GB system RAM** (`deep-hybrid`). These are
+starting points for testing, not measured minimums or guarantees. Leave room
+for your OS and other applications.
+
+For around 8 GB VRAM, try:
 
 ```sh
-millie --serving-profile hybrid
-millie --serving-profile deep-hybrid
+millie --model millie-35B-A3B-9GB --serving-profile hybrid
 ```
+
+For around 4 GB VRAM, try:
+
+```sh
+millie --model millie-35B-A3B-9GB --serving-profile deep-hybrid
+```
+
+Replace the model slug with `millie-35B-A3B-11GB` to try that model instead.
+These commands explicitly choose the placement profile; check the profile
+reported at startup. Close existing sessions before changing placement.
 
 `hybrid` uses more CPU/RAM to reduce GPU weight memory; `deep-hybrid` also
 uses a shorter context and places all experts on CPU. Both disable vision.

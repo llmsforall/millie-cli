@@ -7,6 +7,36 @@ the model is the open-weight [Millie](https://huggingface.co/llmsforall) model,
 served by a bundled copy of [llama.cpp](https://github.com/llmsforall/llama.cpp).
 Nothing leaves your machine unless you configure it to.
 
+**[Install and start](#install-and-start)** · **[Hardware support](#hardware-support)**
+
+## Hardware support
+
+Millie runs on Apple Silicon Macs and Linux PCs. The Linux release supports
+**NVIDIA and AMD GPUs through Vulkan** with a compatible installed driver.
+The model does not have to fit entirely in VRAM: hybrid profiles keep expert
+weights in system RAM and split work between CPU and GPU. CPU-only operation
+is also available.
+
+| Hardware                                                   | Configuration to try                            |
+| ---------------------------------------------------------- | ----------------------------------------------- |
+| Apple Silicon Mac with 16 GB unified memory                | 9GB model; recommended Mac defaults             |
+| Linux GPU with enough VRAM for weights and runtime buffers | Full GPU placement                              |
+| Linux GPU with around 8 GB VRAM + 16 GB system RAM         | `hybrid` profile for the 9GB or 11GB model      |
+| Linux GPU with around 4 GB VRAM + 16 GB system RAM         | `deep-hybrid` profile for the 9GB or 11GB model |
+| CPU-only Linux machine                                     | Sufficient system RAM; expect slower responses  |
+
+These are configurations to try, not guaranteed memory requirements. Context,
+drivers and other applications affect fit; more CPU work can reduce speed.
+See the [memory guide](docs/memory.md#linux-system-ram-and-gpu-vram) for exact
+hybrid launch commands and adjustments.
+
+**Hardware testing is still limited**, particularly on AMD GPUs, smaller GPUs,
+and configurations that split work between CPU and GPU. Support is implemented,
+but we haven't verified every setup. If you encounter problems—or get a
+configuration working—please [share your results](https://github.com/llmsforall/millie-cli/issues),
+including your GPU model, VRAM, system RAM, operating system, driver version,
+selected model, launch settings and any error message.
+
 ## Install and start
 
 Choose your platform: **[Mac](#macos-apple-silicon)** · **[Linux](#linux-x86_64)**.
@@ -69,8 +99,10 @@ from Finder into Terminal, and press Return. Then run `millie`.
 ### Linux (x86_64)
 
 Requires Linux x86_64 with glibc 2.31 or newer (for example, Ubuntu 20.04+).
-GPU acceleration requires a working Vulkan driver; CPU-only operation is also
-available. See the [memory guide](docs/memory.md) for model selection.
+NVIDIA and AMD GPU acceleration requires a working Vulkan driver. Smaller GPUs
+can share work with the CPU; CPU-only operation is also available. See
+[hardware support](#hardware-support) for testing limitations and the
+[memory guide](docs/memory.md) for model selection.
 
 **1. Install Millie.** This downloads the application and its matching model
 runtime; you do not need to clone the source or compile anything.
