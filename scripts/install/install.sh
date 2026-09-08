@@ -1,12 +1,12 @@
 #!/bin/sh
 # Millie installer: downloads the platform bundle from GitHub releases,
-# verifies its checksum, unpacks it under ~/.millie/app/<version>/, and links
-# the millie binary into ~/.local/bin. Sets persistent PATH for Bash and Zsh.
+# verifies its checksum, unpacks it under ~/.millie/app/<version>/, and installs
+# a millie launcher into ~/.local/bin. Sets persistent PATH for Bash and Zsh.
 #
 # Usage: install.sh [--release VERSION]
 # Environment:
 #   MILLIE_RELEASE      Version to install (default: latest).
-#   MILLIE_INSTALL_DIR  Where the millie symlink goes (default: ~/.local/bin).
+#   MILLIE_INSTALL_DIR  Where the millie launcher goes (default: ~/.local/bin).
 #   MILLIE_HOME         Millie home directory (default: ~/.millie).
 
 set -eu
@@ -87,19 +87,27 @@ fi
 
 step "Installing to $APP_ROOT/$RELEASE"
 mkdir -p "$APP_ROOT"
+APP_ROOT="$(cd "$APP_ROOT" && pwd -P)"
 rm -rf "$APP_ROOT/$RELEASE"
 tar -xzf "$tmp_dir/$archive" -C "$APP_ROOT"
 mv "$APP_ROOT/$name" "$APP_ROOT/$RELEASE"
 
-step "Linking $BIN_DIR/millie"
-mkdir -p "$BIN_DIR"
-ln -sf "$APP_ROOT/$RELEASE/bin/millie" "$BIN_DIR/millie"
-
-# The installer is a child process: it cannot change its parent terminal's PATH.
-# Persist the entry for future shells and print an activation command for this one.
 shell_quote() {
   printf "'%s'" "$(printf '%s' "$1" | sed "s/'/'\\\\''/g")"
 }
+
+# macOS can report a symlink's location as the executable directory, which
+# breaks lookup of the bundled catalog, prompt, template and model server.
+# Exec the absolute binary path, preserving arguments, signals and exit status.
+step "Installing launcher $BIN_DIR/millie"
+mkdir -p "$BIN_DIR"
+printf '#!/bin/sh\nexec %s "$@"\n' "$(shell_quote "$APP_ROOT/$RELEASE/bin/millie")" > "$tmp_dir/launcher"
+chmod 755 "$tmp_dir/launcher"
+# Replace an old symlink rather than writing through it into the signed binary.
+mv -f "$tmp_dir/launcher" "$BIN_DIR/millie"
+
+# The installer is a child process: it cannot change its parent terminal's PATH.
+# Persist the entry for future shells and print an activation command for this one.
 quoted_bin=$(shell_quote "$BIN_DIR")
 path_line=$(printf 'case ":$PATH:" in *:%s:*) ;; *) export PATH=%s:"$PATH" ;; esac' "$quoted_bin" "$quoted_bin")
 path_setup_ok=true

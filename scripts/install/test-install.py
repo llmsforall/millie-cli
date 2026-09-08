@@ -24,11 +24,24 @@ def check(shell, operating_system, profile_name=None, custom_directory=False):
         name = 'millie-0.1.0-' + platform
         archive = root / (name + '.tar.gz')
         with tarfile.open(archive, 'w:gz') as output:
-            data = b'#!/bin/sh\nprintf "millie 0.1.0\\n"\n'
+            data = ('#!' + sys.executable + '\n' + '''import json,os,sys
+from pathlib import Path
+if sys.argv[1:] == ['--version']:
+    print('millie 0.1.0')
+else:
+    print(json.dumps({'args':sys.argv[1:], 'cwd':os.getcwd(),
+        'stdin':sys.stdin.read(), 'marker':os.environ['USER_MARKER'],
+        'resource':(Path(sys.argv[0]).parent/'resource.txt').read_text()}))
+    sys.exit(17)
+''').encode()
             info = tarfile.TarInfo(name + '/bin/millie')
             info.mode = 0o755
             info.size = len(data)
             output.addfile(info, io.BytesIO(data))
+            resource = b'bundled resource'
+            info = tarfile.TarInfo(name + '/bin/resource.txt')
+            info.size = len(resource)
+            output.addfile(info, io.BytesIO(resource))
         sums = root / 'SHA256SUMS'
         sums.write_text(hashlib.sha256(archive.read_bytes()).hexdigest() + '  ' + archive.name + '\n')
         curl = mocks / 'curl'
@@ -59,9 +72,22 @@ else: sys.stdout.buffer.write((Path(os.environ['FIXTURE'])/url.rsplit('/',1)[-1]
             p.write_text('export USER_MARKER=preserved\n')
         def install():
             return subprocess.run(['sh', str(INSTALLER)], env=env, cwd=root, capture_output=True, text=True, timeout=20)
+        # Upgrade from the previous symlink installer without overwriting its target.
+        bindir.mkdir(parents=True)
+        old_binary = root / 'previous-binary'
+        old_binary.write_bytes(b'previous signed executable')
+        (bindir / 'millie').symlink_to(old_binary)
         result = install()
         assert result.returncode == 0, result.stderr
-        assert (bindir / 'millie').is_symlink()
+        assert not (bindir / 'millie').is_symlink()
+        assert old_binary.read_bytes() == b'previous signed executable'
+        assert (home / '.millie/app/0.1.0/bin/millie').read_bytes() == data
+        args = ['--probe', 'space argument', "quote'argument", '$(touch BAD)', '']
+        probe = subprocess.run([str(bindir / 'millie'), *args], env=dict(env, USER_MARKER='forwarded'), cwd=root,
+                               input='forwarded stdin', capture_output=True, text=True, timeout=10)
+        assert probe.returncode == 17, probe.stderr
+        assert json.loads(probe.stdout) == {'args': args, 'cwd': str(root.resolve()),
+            'stdin': 'forwarded stdin', 'marker': 'forwarded', 'resource': 'bundled resource'}
         first = {p: p.read_bytes() for p in profiles}
         assert all(b'USER_MARKER=preserved' in v for v in first.values())
         assert install().returncode == 0

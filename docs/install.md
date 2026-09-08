@@ -7,7 +7,7 @@ It gives every command for downloading, persistent PATH setup, checking the
 installation, entering your project folder and starting Millie.
 
 The installer downloads the platform bundle, verifies its checksum and installs
-it under `~/.millie/app/`. It links the command into `~/.local/bin` and adds that
+it under `~/.millie/app/`. It installs a launcher in `~/.local/bin` and adds that
 directory to future Bash/Zsh sessions through the shell's startup files. It
 cannot change the parent terminal's environment, so the walkthrough includes an
 explicit `export PATH` command for the terminal already open.
