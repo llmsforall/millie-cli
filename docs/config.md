@@ -11,18 +11,18 @@ For a first launch, see [Getting started](getting-started.md). For allocation
 failures or room for other applications, see [Make Millie fit in memory](memory.md).
 The settings most people touch:
 
-| Setting | What it does |
-| --- | --- |
-| `model` | The remembered model choice; use `millie --model select` to choose again. |
-| `model_provider` | Where the model is served from. Defaults to `llamacpp`, the bundled local server. |
-| `approval_policy` | When Millie stops to ask before running a command: `untrusted`, `on-request`, `on-failure` or `never`. See [sandbox.md](./sandbox.md). |
-| `sandbox_mode` | What the sandbox lets commands do: `read-only`, `workspace-write` or `danger-full-access`. See [sandbox.md](./sandbox.md). |
-| `[llamacpp]` | Settings for the bundled local server; see below. |
-| `[mcp_servers.<name>]` | External MCP tool servers to make available; see below. |
-| `notify` | A command to run when a turn finishes, for desktop notifications. |
-| `log_dir` | Directory for a plaintext log of the session. |
-| `model_context_window` | Requested conversation context; automatic serving profiles may cap it to fit memory. |
-| `--profile <name>` | Layers `$MILLIE_HOME/<name>.config.toml` over the base user config. Explicit model choices are saved there. |
+| Setting                | What it does                                                                                                                           |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `model`                | The remembered model choice; use `millie --model select` to choose again.                                                              |
+| `model_provider`       | Where the model is served from. Defaults to `llamacpp`, the bundled local server.                                                      |
+| `approval_policy`      | When Millie stops to ask before running a command: `untrusted`, `on-request`, `on-failure` or `never`. See [sandbox.md](./sandbox.md). |
+| `sandbox_mode`         | What the sandbox lets commands do: `read-only`, `workspace-write` or `danger-full-access`. See [sandbox.md](./sandbox.md).             |
+| `[llamacpp]`           | Settings for the bundled local server; see below.                                                                                      |
+| `[mcp_servers.<name>]` | External MCP tool servers to make available; see below.                                                                                |
+| `notify`               | A command to run when a turn finishes, for desktop notifications.                                                                      |
+| `log_dir`              | Directory for a plaintext log of the session.                                                                                          |
+| `model_context_window` | Requested conversation context; automatic serving profiles may cap it to fit memory.                                                   |
+| `--profile <name>`     | Layers `$MILLIE_HOME/<name>.config.toml` over the base user config. Explicit model choices are saved there.                            |
 
 ## The system prompt
 
@@ -87,15 +87,15 @@ capacity, not currently free memory. Leave room for other applications.
 
 Examples from the bundled catalog:
 
-| Model/device | Profile | Main defaults |
-| --- | --- | --- |
-| 9GB, 16 GB Apple Silicon | `metal-16gb` | 65,536-token context, vision off, weights loaded into RAM |
-| 11GB, 16 GB Apple Silicon | `metal-16gb` | 32k context, vision off, mapped weights, 9 expert layers on CPU; tight fit |
-| 7GB, 16 GB Apple Silicon | `metal-full` | 32k context, vision on |
-| 9GB/11GB, larger Mac | `metal-full` | 131k context, vision on; catalog threshold 22 GB RAM |
-| 9GB/11GB, 16 GB GPU class | `gpu-full` | 131k context, vision on; catalog threshold 15 GB VRAM |
-| 9GB/11GB, 8 GB GPU + 16 GB RAM class | `hybrid` | 131k context, vision off, 32 expert layers on CPU |
-| 9GB/11GB, 4 GB GPU + 16 GB RAM class | `deep-hybrid` | 32k context, vision off, all experts on CPU |
+| Model/device                         | Profile       | Main defaults                                                              |
+| ------------------------------------ | ------------- | -------------------------------------------------------------------------- |
+| 9GB, 16 GB Apple Silicon             | `metal-16gb`  | 65,536-token context, vision off, weights loaded into RAM                  |
+| 11GB, 16 GB Apple Silicon            | `metal-16gb`  | 32k context, vision off, mapped weights, 9 expert layers on CPU; tight fit |
+| 7GB, 16 GB Apple Silicon             | `metal-full`  | 32k context, vision on                                                     |
+| 9GB/11GB, larger Mac                 | `metal-full`  | 131k context, vision on; catalog threshold 22 GB RAM                       |
+| 9GB/11GB, 16 GB GPU class            | `gpu-full`    | 131k context, vision on; catalog threshold 15 GB VRAM                      |
+| 9GB/11GB, 8 GB GPU + 16 GB RAM class | `hybrid`      | 131k context, vision off, 32 expert layers on CPU                          |
+| 9GB/11GB, 4 GB GPU + 16 GB RAM class | `deep-hybrid` | 32k context, vision off, all experts on CPU                                |
 
 These are profile defaults, not measured usage or guarantees. CPU profiles and
 thresholds also vary by model. Consult `millie-models.json` for the full current
@@ -134,22 +134,22 @@ These keys belong under `[llamacpp]`. Normally leave them unset so the selected
 model's serving profile can provide defaults. See [memory help](memory.md) for
 tradeoffs before copying overrides into your config.
 
-| Key | Purpose |
-| --- | --- |
-| `gpu = [0]` | Device indices; `[]` selects CPU-only serving |
-| `port = 8095` | Local server port; default 8095 |
-| `profile = "hybrid"` | Pin a profile supported by the selected model |
-| `ctx_size = 32768` | Force total server context, bypassing the profile cap |
-| `parallel = 2` | Concurrent request slots; total context is divided among slots; default 1 |
-| `vision = false` | Disable image input and vision-tower loading |
-| `kv_cache = "q8_0"` | Profile default cache type; `f16` uses more memory; `q4_0` is not broadly validated |
-| `mmap = true` | Memory-map weights; paging can slow responses |
-| `n_cpu_moe = 32` | Number of expert layers placed on CPU |
-| `server_bin = "/path/to/llama-server"` | Override runtime executable discovery |
-| `model_path = "/path/to/model.gguf"` | Serve a manually managed local model |
-| `mmproj_path = "/path/to/mmproj.gguf"` | Matching vision tower for a manual model path |
-| `model_hf = "org/repo/file.gguf"` | Track a custom Hugging Face GGUF; see model updates below |
-| `resamples = 1` | Enable one clean retry per pathology episode; default off |
+| Key                                    | Purpose                                                                             |
+| -------------------------------------- | ----------------------------------------------------------------------------------- |
+| `gpu = [0]`                            | Device indices; `[]` selects CPU-only serving                                       |
+| `port = 8095`                          | Local server port; default 8095                                                     |
+| `profile = "hybrid"`                   | Pin a profile supported by the selected model                                       |
+| `ctx_size = 32768`                     | Force total server context, bypassing the profile cap                               |
+| `parallel = 2`                         | Concurrent request slots; total context is divided among slots; default 1           |
+| `vision = false`                       | Disable image input and vision-tower loading                                        |
+| `kv_cache = "q8_0"`                    | Profile default cache type; `f16` uses more memory; `q4_0` is not broadly validated |
+| `mmap = true`                          | Memory-map weights; paging can slow responses                                       |
+| `n_cpu_moe = 32`                       | Number of expert layers placed on CPU                                               |
+| `server_bin = "/path/to/llama-server"` | Override runtime executable discovery                                               |
+| `model_path = "/path/to/model.gguf"`   | Serve a manually managed local model                                                |
+| `mmproj_path = "/path/to/mmproj.gguf"` | Matching vision tower for a manual model path                                       |
+| `model_hf = "org/repo/file.gguf"`      | Track a custom Hugging Face GGUF; see model updates below                           |
+| `resamples = 1`                        | Enable one clean retry per pathology episode; default off                           |
 
 Sampling defaults live in the external catalog and can be overridden through
 configuration; they do not require a rebuild. Catalog-managed models require every sampling setting to resolve from catalog

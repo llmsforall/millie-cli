@@ -167,11 +167,11 @@ or the [release build guide](docs/release-builds.md).
 
 ## Models
 
-| Model | Approximate download including vision | Choosing a model |
-| --- | --- | --- |
-| Millie 35B-A3B 7GB | 6.9 GB | Smallest download; useful when memory is limited |
-| Millie 35B-A3B 9GB (ternary experts) | 8.9 GB | Recommended for Apple Silicon Macs with 16 GB RAM |
-| Millie 35B-A3B 11GB | 10.9 GB | Needs more headroom; fits but tight on a 16 GB Mac |
+| Model                                | Approximate download including vision | Choosing a model                                   |
+| ------------------------------------ | ------------------------------------- | -------------------------------------------------- |
+| Millie 35B-A3B 7GB                   | 6.9 GB                                | Smallest download; useful when memory is limited   |
+| Millie 35B-A3B 9GB (ternary experts) | 8.9 GB                                | Recommended for Apple Silicon Macs with 16 GB RAM  |
+| Millie 35B-A3B 11GB                  | 10.9 GB                               | Needs more headroom; fits but tight on a 16 GB Mac |
 
 Download size is not the amount of memory needed to run a model. Context,
 image support, device selection and other applications all affect memory use.

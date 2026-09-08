@@ -21,6 +21,7 @@ vision or memory settings. The session that starts the managed server owns it;
 exiting that session stops it unless --keep-model-server was requested.
 
 Guides:
+
 - Getting started: https://github.com/llmsforall/millie-cli/blob/main/docs/getting-started.md
 - Memory troubleshooting: https://github.com/llmsforall/millie-cli/blob/main/docs/memory.md
 - Configuration: https://github.com/llmsforall/millie-cli/blob/main/docs/config.md

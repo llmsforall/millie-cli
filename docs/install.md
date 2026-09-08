@@ -19,12 +19,12 @@ for this release.
 
 ### System requirements
 
-| Requirement                 | Details                                                          |
-| --------------------------- | ---------------------------------------------------------------- |
-| Operating systems           | macOS 12+ (Apple silicon), Linux x86_64 (glibc 2.31+, e.g. Ubuntu 20.04+), Windows 10+ x86_64 |
-| GPU                         | optional: any Vulkan-capable GPU (Linux/Windows) or Apple silicon (Metal); CPU-only works |
+| Requirement                 | Details                                                                                                                                     |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| Operating systems           | macOS 12+ (Apple silicon), Linux x86_64 (glibc 2.31+, e.g. Ubuntu 20.04+), Windows 10+ x86_64                                               |
+| GPU                         | optional: any Vulkan-capable GPU (Linux/Windows) or Apple silicon (Metal); CPU-only works                                                   |
 | Memory                      | Start with the model chooser; 16 GB Apple Silicon: 9GB recommended, 11GB tight. Other devices depend on model/profile and RAM/VRAM headroom |
-| Git (optional, recommended) | 2.23+ for built-in PR helpers                                    |
+| Git (optional, recommended) | 2.23+ for built-in PR helpers                                                                                                               |
 
 See [getting started](getting-started.md) for model selection and downloads,
 and [memory help](memory.md) for context/device settings. Available release

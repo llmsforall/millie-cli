@@ -2,10 +2,10 @@
 
 Millie releases combine two repositories:
 
-| Repository | Provides |
-| --- | --- |
+| Repository              | Provides                                                        |
+| ----------------------- | --------------------------------------------------------------- |
 | `llmsforall/millie-cli` | CLI, system prompt, model catalog, installer and bundle tooling |
-| `llmsforall/llama.cpp` | Matching model runtime and native chat template |
+| `llmsforall/llama.cpp`  | Matching model runtime and native chat template                 |
 
 Keep the checkouts side by side. For a release, select the corresponding tag in
 both repositories and record both commit IDs in the release notes. A source
@@ -34,15 +34,15 @@ checks separately on the completed bundle.
 
 Defaults:
 
-| Setting | Default |
-| --- | --- |
-| `RUNTIME_SOURCE` | Sibling `llama.cpp` checkout |
-| `CLI_SOURCE` | This checkout |
-| `RUNTIME_BUILD` | `.release-build/runtime` |
-| `CARGO_TARGET_DIR` | `.release-build/cargo` |
-| `OUT` | `dist` |
-| `PROFILE` | `fastrel` |
-| `MACOSX_DEPLOYMENT_TARGET` | `12.0` |
+| Setting                    | Default                      |
+| -------------------------- | ---------------------------- |
+| `RUNTIME_SOURCE`           | Sibling `llama.cpp` checkout |
+| `CLI_SOURCE`               | This checkout                |
+| `RUNTIME_BUILD`            | `.release-build/runtime`     |
+| `CARGO_TARGET_DIR`         | `.release-build/cargo`       |
+| `OUT`                      | `dist`                       |
+| `PROFILE`                  | `fastrel`                    |
+| `MACOSX_DEPLOYMENT_TARGET` | `12.0`                       |
 
 Use absolute paths when overriding directory settings. `OUT` must not already
 contain the same bundle or archive; use a fresh output directory for a rebuild.
@@ -71,19 +71,19 @@ for a local build.
 
 The 0.1.0 release used these inputs:
 
-| Component | Version or setting |
-| --- | --- |
-| Rust | 1.95.0 |
-| CLI profile | `fastrel`, locked Cargo dependencies |
-| cargo-zigbuild | 0.23.3 |
-| Zig | 0.16.0 |
-| CMake | 3.31.10 |
-| Rust target | `x86_64-unknown-linux-gnu.2.31` |
-| C/C++ target | `x86_64-linux-gnu.2.31` |
-| shaderc | v2026.3, commit `2fbab0561c3cc466e992a954e9e33e2cf8c94555` |
-| Runtime Vulkan headers | 1.4.312 |
-| Bundled Vulkan loader and its headers | Vulkan SDK 1.4.357.0 |
-| CLI OpenSSL | 3.5.5 from `openssl-src` 300.5.5+3.5.5 |
+| Component                             | Version or setting                                         |
+| ------------------------------------- | ---------------------------------------------------------- |
+| Rust                                  | 1.95.0                                                     |
+| CLI profile                           | `fastrel`, locked Cargo dependencies                       |
+| cargo-zigbuild                        | 0.23.3                                                     |
+| Zig                                   | 0.16.0                                                     |
+| CMake                                 | 3.31.10                                                    |
+| Rust target                           | `x86_64-unknown-linux-gnu.2.31`                            |
+| C/C++ target                          | `x86_64-linux-gnu.2.31`                                    |
+| shaderc                               | v2026.3, commit `2fbab0561c3cc466e992a954e9e33e2cf8c94555` |
+| Runtime Vulkan headers                | 1.4.312                                                    |
+| Bundled Vulkan loader and its headers | Vulkan SDK 1.4.357.0                                       |
+| CLI OpenSSL                           | 3.5.5 from `openssl-src` 300.5.5+3.5.5                     |
 
 The [OpenSSL helper](../scripts/release/build-openssl.sh) supports Linux x86_64
 through the supplied `zigcc231` wrapper. Add `scripts/release/linux` to PATH

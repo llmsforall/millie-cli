@@ -95,14 +95,14 @@ CPU-only serving needs sufficient system RAM and is generally slower. On CPU,
 
 ## Advanced controls
 
-| Setting under `[llamacpp]` | Effect and tradeoff |
-| --- | --- |
-| `profile` | Pins a model-specific serving profile; normally leave automatic |
-| `kv_cache` | Profiles use `q8_0`; `f16` uses more cache memory. `q4_0` is accepted but not a validated general recommendation |
-| `mmap` | Allows file-backed weight mapping; paging under pressure can be slow |
-| `n_cpu_moe` | Places expert layers on CPU; shifts work and may relieve GPU pressure |
-| `ctx_size` | Overrides total server context directly; prefer `model_context_window` for ordinary use |
-| `parallel` | Server request slots; total context is divided among slots. More slots do not create more context or memory |
+| Setting under `[llamacpp]` | Effect and tradeoff                                                                                              |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `profile`                  | Pins a model-specific serving profile; normally leave automatic                                                  |
+| `kv_cache`                 | Profiles use `q8_0`; `f16` uses more cache memory. `q4_0` is accepted but not a validated general recommendation |
+| `mmap`                     | Allows file-backed weight mapping; paging under pressure can be slow                                             |
+| `n_cpu_moe`                | Places expert layers on CPU; shifts work and may relieve GPU pressure                                            |
+| `ctx_size`                 | Overrides total server context directly; prefer `model_context_window` for ordinary use                          |
+| `parallel`                 | Server request slots; total context is divided among slots. More slots do not create more context or memory      |
 
 `--serving-profile` selects a model's memory/placement defaults. `--profile`
 selects a named user configuration; they are different options. Explicit
