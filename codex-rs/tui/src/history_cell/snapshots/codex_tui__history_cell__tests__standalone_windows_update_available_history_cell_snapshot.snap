@@ -1,0 +1,11 @@
+---
+source: tui/src/history_cell/tests.rs
+expression: rendered
+---
+╭─────────────────────────────────────────────────────────────╮
+│ ✨ Update available! 0.1.0 -> 9.9.9                         │
+│ Update by re-running install.sh from a newer Millie bundle. │
+│                                                             │
+│ See                                                         │
+│ https://llmsforall.com                                      │
+╰─────────────────────────────────────────────────────────────╯

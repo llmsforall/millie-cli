@@ -1,0 +1,35 @@
+diff --git a/loader/loader.c b/loader/loader.c
+--- a/loader/loader.c
++++ b/loader/loader.c
+@@ -2145,6 +2145,31 @@
+         goto out;
+     }
+ 
++    // Skip a driver we have already scanned.  Two different manifests can name the same
++    // library: a distribution manifest using a bare "library_path" resolved through the
++    // dynamic linker search path, and one using an absolute path, can both end up at the
++    // same file.  The duplicate checks elsewhere in the loader only compare path strings,
++    // so nothing catches this and the driver is scanned twice, which reports every
++    // physical device it owns twice from vkEnumeratePhysicalDevices.
++    //
++    // dlopen/LoadLibrary returns the same handle for an object that is already loaded, so
++    // comparing handles identifies the duplicate exactly, without resolving paths or
++    // stat()ing anything.  Keep the entry already in the list: the search order puts the
++    // more specific manifest first.
++    for (uint32_t i = 0; i < icd_tramp_list->count; i++) {
++        if (icd_tramp_list->scanned_list[i].handle == handle) {
++            loader_log(inst, VULKAN_LOADER_INFO_BIT | VULKAN_LOADER_DRIVER_BIT, 0,
++                       "loader_scanned_icd_add: Driver %s is the same library as already loaded driver %s, skipping duplicate",
++                       filename, icd_tramp_list->scanned_list[i].lib_name);
++            // Release the reference the open above took; the existing entry owns the one
++            // that loader_scanned_icd_clear will release.
++            loader_platform_close_library(handle);
++            handle = NULL;
++            res = VK_SUCCESS;
++            goto out;
++        }
++    }
++
+     // Try to load the driver's exported vk_icdNegotiateLoaderICDInterfaceVersion
+     fp_negotiate_icd_version = loader_platform_get_proc_address(handle, "vk_icdNegotiateLoaderICDInterfaceVersion");
+ 

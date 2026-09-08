@@ -1,0 +1,15 @@
+---
+source: tui/src/model_migration.rs
+assertion_line: 534
+expression: terminal.backend()
+---
+
+> Millie just got an upgrade. Introducing millie-35B-A3B-7GB
+
+  We recommend switching from millie-35B-A3B-11GB to
+  millie-35B-A3B-7GB.
+
+  Smaller and faster, with lower memory use. Learn more
+  about millie-35B-A3B-7GB at https://llmsforall.com
+
+  Press enter to continue

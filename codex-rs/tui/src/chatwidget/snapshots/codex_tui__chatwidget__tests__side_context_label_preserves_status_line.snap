@@ -1,0 +1,10 @@
+---
+source: tui/src/chatwidget/tests/side.rs
+assertion_line: 401
+expression: terminal.backend()
+---
+"                                                                                "
+"                                                                                "
+"› Check recently modified functions for compatibility                           "
+"                                                                                "
+"  millie-35B-A3B-11GB                 Side from main thread · Ctrl+C to return  "

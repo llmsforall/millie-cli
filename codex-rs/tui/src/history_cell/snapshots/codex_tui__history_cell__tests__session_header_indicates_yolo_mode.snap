@@ -1,0 +1,12 @@
+---
+source: tui/src/history_cell/tests.rs
+assertion_line: 1504
+expression: rendered
+---
+╭───────────────────────────╮
+│ >_ Millie (vtest)         │
+│                           │
+│ model:       gpt-5        │
+│ directory:   /tmp/project │
+│ permissions: YOLO mode    │
+╰───────────────────────────╯

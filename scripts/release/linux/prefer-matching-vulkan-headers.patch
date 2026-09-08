@@ -1,0 +1,11 @@
+--- a/loader/CMakeLists.txt
++++ b/loader/CMakeLists.txt
+@@ -20,7 +20,7 @@
+ include(CheckIncludeFile)
+ 
+ add_library(loader_specific_options INTERFACE)
+-target_link_libraries(loader_specific_options INTERFACE loader_common_options Vulkan::Headers)
++target_link_libraries(loader_specific_options INTERFACE Vulkan::Headers loader_common_options)
+ target_include_directories(loader_specific_options INTERFACE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/generated ${CMAKE_CURRENT_BINARY_DIR})
+ 
+ if(WIN32)

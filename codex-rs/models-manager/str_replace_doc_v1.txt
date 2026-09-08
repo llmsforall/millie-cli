@@ -1,0 +1,93 @@
+## File editing: create_file and str_replace
+
+Two tools edit files. `create_file` writes a new file; `str_replace` edits an existing one by exact text replacement. `delete_file` removes a file.
+
+create_file — parameters `path` and `content`. Creates the file at `path` with exactly `content`. Fails if the file already exists.
+
+str_replace — parameters `path`, `old_str`, `new_str`. Finds `old_str` in the file and replaces it with `new_str`.
+
+The exact rules:
+- `old_str` must match the file's current text character-for-character — including indentation, tabs vs spaces, and blank lines — and must appear exactly once in the file. If it appears zero times or more than once, the call fails and the file is unchanged.
+- Each call is verified and applied immediately when it runs. The tool result tells you whether it applied.
+- Calls in one reply execute in order: a later call sees the earlier call's changes.
+- A failed call changes nothing. Edits you only planned, described, or drafted in your thinking never happened. The file state is: what the tools last showed you, plus your successfully-applied edits, and nothing else.
+
+Writing replacements that apply on the first try:
+- Copy `old_str` from file content you have actually seen via the tools. If you are not sure of the current text, read the relevant lines first.
+- Make `old_str` just large enough to be unique: the lines you're changing plus a line or two around them. Very long blocks are brittle; a too-short string risks matching twice.
+- To insert without deleting, include an adjacent anchor line in `old_str` and repeat it in `new_str` with the new lines added.
+- Whitespace counts everywhere.
+
+If a call fails with `str_replace failed: old_str not found in file` (or matched multiple locations):
+- The file differs from your text, or your string is ambiguous. Do NOT resend the same call.
+- Re-read the actual region, copy the exact current text, and try again — extending the string by a neighboring line resolves ambiguity.
+
+Frequent mistakes to avoid:
+
+Patch mechanics:
+- Re-adding what already exists. Before adding a function, class, or file, check whether it's already there. Adding a duplicate definition "to be safe" corrupts the file even when the patch applies cleanly. If something exists, modify it with -/+ lines; never re-insert it.
+- Quoting your intended result as context. Context lines describe the file as it IS, not as it will be after your change. Never write context that assumes an edit you are proposing, planned, or that previously failed.
+- Format slips. Every added line needs its `+`; every patch needs its *** Begin Patch / *** End Patch envelope. A patch missing these is rejected whole.
+- Anchoring to text you haven't verified. Don't target a comment or line you believe "should be there" — only anchor to text you have seen in this conversation.
+
+Code quality (these fail just as hard as broken patches):
+- Unverified APIs. Don't call methods, fields, or parameters you haven't seen in this repo or know from the standard library with certainty. A patch that applies but doesn't compile is a failure. When unsure, read the definition first.
+- Tests that test nothing. A test that mocks or reimplements the code under test proves nothing. Call the real implementation; mock only true externals. Never no-op the very methods your test asserts about.
+- Mutating existing tests to make room. Add focused new test cases; don't repurpose or rewrite unrelated existing ones.
+- Half-delivered work. If the task needs an artifact produced or a script run, creating the file is not the end — run the apply/build/test step in the same reply when the tools allow it.
+- Scope creep. Change what the task requires and nothing else. Unrequested "improvements" count against you.
+- Dropped constraints. Re-check the user's explicit requirements (named tools, versions, locations) before finalizing — a technically working patch that ignores a stated constraint is wrong.
+
+Example — modify one line:
+
+<tool_call>
+<function=str_replace>
+<parameter=path>
+greeting.py
+</parameter>
+<parameter=old_str>
+def greet(name):
+    print("Hello")
+    print("Goodbye")
+</parameter>
+<parameter=new_str>
+def greet(name):
+    print("Hello, " + name)
+    print("Goodbye")
+</parameter>
+</function>
+</tool_call>
+
+This call opens greeting.py, finds the quoted three-line block, and replaces the middle line, leaving the rest unchanged.
+
+Example — create a file, then edit another:
+
+<tool_call>
+<function=create_file>
+<parameter=path>
+utils/slug.py
+</parameter>
+<parameter=content>
+import re
+
+def slugify(text):
+    return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
+</parameter>
+</function>
+</tool_call>
+<tool_call>
+<function=str_replace>
+<parameter=path>
+app.py
+</parameter>
+<parameter=old_str>
+from flask import Flask
+</parameter>
+<parameter=new_str>
+from flask import Flask
+from utils.slug import slugify
+</parameter>
+</function>
+</tool_call>
+
+Note each str_replace uses the smallest unique anchor for its spot.

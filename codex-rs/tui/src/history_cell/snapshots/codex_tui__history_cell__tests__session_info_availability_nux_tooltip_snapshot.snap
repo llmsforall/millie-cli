@@ -1,0 +1,13 @@
+---
+source: tui/src/history_cell/tests.rs
+assertion_line: 619
+expression: rendered
+---
+╭─────────────────────────╮
+│ >_ Millie (v0.1.0)      │
+│                         │
+│ model:     gpt-5        │
+│ directory: /tmp/project │
+╰─────────────────────────╯
+
+  Tip: Model just became available

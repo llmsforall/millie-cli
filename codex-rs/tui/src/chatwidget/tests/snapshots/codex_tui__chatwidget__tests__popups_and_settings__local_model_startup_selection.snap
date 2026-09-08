@@ -1,0 +1,6 @@
+---
+source: tui/src/chatwidget/tests/popups_and_settings.rs
+assertion_line: 25
+expression: "rendered.join(\"\\n\\n\")"
+---
+• Local models are selected at startup. Close existing Millie sessions, then run `millie --model select`.

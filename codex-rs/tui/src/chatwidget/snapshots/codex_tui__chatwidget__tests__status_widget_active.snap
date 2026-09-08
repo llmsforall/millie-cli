@@ -1,0 +1,12 @@
+---
+source: tui/src/chatwidget/tests/status_and_layout.rs
+assertion_line: 1840
+expression: normalized_backend_snapshot(terminal.backend())
+---
+"                                                                                "
+"• Analyzing (0s • esc to interrupt)                                             "
+"                                                                                "
+"                                                                                "
+"› Ask Millie to do anything                                                     "
+"                                                                                "
+"  millie-35B-A3B-11GB default · /tmp/project                                    "

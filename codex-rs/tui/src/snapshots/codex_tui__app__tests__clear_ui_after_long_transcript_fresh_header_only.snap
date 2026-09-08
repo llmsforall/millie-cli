@@ -1,0 +1,11 @@
+---
+source: tui/src/app/tests.rs
+assertion_line: 3714
+expression: rendered
+---
+╭──────────────────────────╮
+│ >_ Millie (v<VERSION>)   │
+│                          │
+│ model:     gpt-test high │
+│ directory: /tmp/project  │
+╰──────────────────────────╯

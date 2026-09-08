@@ -1,0 +1,19 @@
+diff --git a/loader/CMakeLists.txt b/loader/CMakeLists.txt
+index ba7ce25bd..f1b8e9f71 100644
+--- a/loader/CMakeLists.txt
++++ b/loader/CMakeLists.txt
+@@ -457,10 +457,10 @@ else()
+         set_target_properties(vulkan PROPERTIES MACHO_CURRENT_VERSION "${APPLE_VULKAN_LOADER_VERSION}")
+         set_target_properties(vulkan-framework PROPERTIES MACHO_CURRENT_VERSION "${APPLE_VULKAN_LOADER_VERSION}")
+ 
+-        install(TARGETS vulkan-framework
+-            PUBLIC_HEADER DESTINATION vulkan
+-            FRAMEWORK DESTINATION loader
+-        )
++        # install(TARGETS vulkan-framework
++        #    PUBLIC_HEADER DESTINATION vulkan
++        #    FRAMEWORK DESTINATION loader
++        # )
+     endif()
+ endif()
+ 

@@ -1,0 +1,22 @@
+---
+source: tui/src/status/tests.rs
+expression: sanitized
+---
+/status
+
+╭──────────────────────────────────────────────────────────────────────────╮
+│  >_ Millie (v0.1.0)                                                      │
+│                                                                          │
+│  Remote:           unix:///tmp/codex-home/app-server-control/app-server- │
+│                    control.sock (v0.133.0)                               │
+│                                                                          │
+│  Model:            gpt-5.1-codex-max (reasoning medium, summaries auto)  │
+│  Model provider:   llamacpp                                              │
+│  Directory: [[workspace]]                                                │
+│  Permissions:      Custom (workspace with network access, on-request)    │
+│  Agents.md:        <none>                                                │
+│                                                                          │
+│  Token usage:      750 total  (500 input + 250 output)                   │
+│  Context window:   100% left (750 used / 272K)                           │
+│  Limits:           data not available yet                                │
+╰──────────────────────────────────────────────────────────────────────────╯
