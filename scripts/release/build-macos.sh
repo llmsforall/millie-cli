@@ -3,13 +3,13 @@ set -euo pipefail
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd -P)
 ROOT=$(cd "$SCRIPT_DIR/../.." && pwd -P)
 if [ "${1:-}" = --help ]; then
-    echo "Usage: JOBS=8 VERSION=0.1.0 bash scripts/release/build-macos.sh"
+    echo "Usage: JOBS=8 VERSION=0.1.1 bash scripts/release/build-macos.sh"
     echo "Uses a sibling llama.cpp checkout; override RUNTIME_SOURCE if needed."
     echo "Outputs: .release-build/ and dist/ (unsigned). See docs/release-builds.md."
     exit 0
 fi
 if [ "$#" -ne 0 ]; then echo "Unknown argument; use --help" >&2; exit 2; fi
-VERSION=${VERSION:-0.1.0}
+VERSION=${VERSION:-0.1.1}
 JOBS=${JOBS:-8}
 PROFILE=${PROFILE:-fastrel}
 MACOSX_DEPLOYMENT_TARGET=${MACOSX_DEPLOYMENT_TARGET:-12.0}

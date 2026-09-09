@@ -147,7 +147,7 @@ impl Default for PathologyParams {
             ngram_penalty_start_n: 3,
             ngram_penalty_max: 10.0,
             backtrack_on_repetition: false,
-            resamples: 1,
+            resamples: 0,
         }
     }
 }
